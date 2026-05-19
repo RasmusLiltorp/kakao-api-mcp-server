@@ -84,11 +84,16 @@ npm run start:http   # add -- --port 8080 to change the port
 Add the server to your MCP client config. See `mcp.json.example` for the
 shape; point `args` at the built `dist/index.js`.
 
-## Skill
+## Skills
 
-`skills/korea-fastest-route/` is a Claude skill that drives these tools to find
-the fastest route between two Korean places while minimising API calls. Install
-it by copying the folder into `~/.claude/skills/`.
+`skills/` contains Claude skills that drive these tools efficiently. Install
+them by copying the folders into `~/.claude/skills/`.
+
+| Skill | Purpose |
+| --- | --- |
+| `korea-fastest-route` | Find the fastest route between two places, comparing car and transit. |
+| `korea-place-finder` | Find places and points of interest, including "what is near X". |
+| `korea-local-search` | Search Korean web, blog, cafe and image content via Daum. |
 
 ## Project structure
 
