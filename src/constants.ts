@@ -7,9 +7,6 @@ export const KAKAO_LOCAL_BASE_URL = "https://dapi.kakao.com";
 export const KAKAO_MOBILITY_BASE_URL = "https://apis-navi.kakaomobility.com";
 export const ODSAY_BASE_URL = "https://api.odsay.com";
 
-/** Default Referer used when the ODsay key is registered against a web URI. */
-export const DEFAULT_ODSAY_REFERER = "https://taros.ai";
-
 /** Timeout applied to every outbound API request. */
 export const REQUEST_TIMEOUT_MS = 15000;
 

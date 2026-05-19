@@ -1,7 +1,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import dotenv from "dotenv";
-import { DEFAULT_ODSAY_REFERER } from "./constants.js";
 
 // Load .env before reading any environment variable. quiet: true suppresses
 // dotenv's startup banner, which would otherwise be written to stdout and
@@ -15,7 +14,7 @@ export interface AppConfig {
   port: number;
   kakaoApiKey: string;
   odsayApiKey?: string;
-  odsayReferer: string;
+  odsayReferer?: string;
 }
 
 /**
@@ -71,8 +70,6 @@ export function loadConfig(): AppConfig {
     odsayApiKey:
       (argv.odsayApiKey as string | undefined) ?? process.env.ODSAY_API_KEY,
     odsayReferer:
-      (argv.odsayReferer as string | undefined) ??
-      process.env.ODSAY_REFERER ??
-      DEFAULT_ODSAY_REFERER,
+      (argv.odsayReferer as string | undefined) ?? process.env.ODSAY_REFERER,
   };
 }

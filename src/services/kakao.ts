@@ -1,15 +1,14 @@
-import axios, { type AxiosInstance } from "axios";
-import {
-  KAKAO_LOCAL_BASE_URL,
-  KAKAO_MOBILITY_BASE_URL,
-  REQUEST_TIMEOUT_MS,
-} from "../constants.js";
+import type { AxiosInstance } from "axios";
+import { KAKAO_LOCAL_BASE_URL, KAKAO_MOBILITY_BASE_URL } from "../constants.js";
 import type {
   DaumSearchResponse,
+  KakaoAddressSearchResponse,
   KakaoCoord2AddressResponse,
+  KakaoCoord2RegionResponse,
   KakaoKeywordSearchResponse,
   MobilityDirectionsResponse,
 } from "../types.js";
+import { createHttpClient } from "./http.js";
 
 export type DaumSearchCategory = "web" | "image" | "blog" | "cafe";
 
@@ -18,6 +17,16 @@ export interface KeywordSearchParams {
   x?: number;
   y?: number;
   radius?: number;
+  page?: number;
+  size?: number;
+}
+
+export interface CategorySearchParams {
+  categoryGroupCode: string;
+  x: number;
+  y: number;
+  radius: number;
+  page?: number;
 }
 
 export interface DaumSearchParams {
@@ -41,7 +50,7 @@ export interface DirectionsParams {
 /**
  * Client for the Kakao Local API, the Daum Search API (both on dapi.kakao.com)
  * and the Kakao Mobility directions API. All three authenticate with the same
- * Kakao REST API key.
+ * Kakao REST API key. Requests retry automatically on rate-limit errors.
  */
 export class KakaoClient {
   private readonly local: AxiosInstance;
@@ -49,15 +58,10 @@ export class KakaoClient {
 
   constructor(apiKey: string) {
     const headers = { Authorization: `KakaoAK ${apiKey}` };
-    this.local = axios.create({
-      baseURL: KAKAO_LOCAL_BASE_URL,
-      headers,
-      timeout: REQUEST_TIMEOUT_MS,
-    });
-    this.mobility = axios.create({
+    this.local = createHttpClient({ baseURL: KAKAO_LOCAL_BASE_URL, headers });
+    this.mobility = createHttpClient({
       baseURL: KAKAO_MOBILITY_BASE_URL,
       headers,
-      timeout: REQUEST_TIMEOUT_MS,
     });
   }
 
@@ -72,6 +76,37 @@ export class KakaoClient {
     return res.data;
   }
 
+  /** Category place search around a coordinate (e.g. all cafes nearby). */
+  async searchByCategory(
+    params: CategorySearchParams,
+  ): Promise<KakaoKeywordSearchResponse> {
+    const res = await this.local.get<KakaoKeywordSearchResponse>(
+      "/v2/local/search/category.json",
+      {
+        params: {
+          category_group_code: params.categoryGroupCode,
+          x: params.x,
+          y: params.y,
+          radius: params.radius,
+          page: params.page,
+        },
+      },
+    );
+    return res.data;
+  }
+
+  /** Address search: resolves an address string to coordinates. */
+  async searchAddress(
+    query: string,
+    page?: number,
+  ): Promise<KakaoAddressSearchResponse> {
+    const res = await this.local.get<KakaoAddressSearchResponse>(
+      "/v2/local/search/address.json",
+      { params: { query, page } },
+    );
+    return res.data;
+  }
+
   /** Converts a coordinate to road-name and lot-number addresses. */
   async coordToAddress(
     x: number,
@@ -79,6 +114,18 @@ export class KakaoClient {
   ): Promise<KakaoCoord2AddressResponse> {
     const res = await this.local.get<KakaoCoord2AddressResponse>(
       "/v2/local/geo/coord2address.json",
+      { params: { x, y } },
+    );
+    return res.data;
+  }
+
+  /** Converts a coordinate to its administrative and legal region codes. */
+  async coordToRegion(
+    x: number,
+    y: number,
+  ): Promise<KakaoCoord2RegionResponse> {
+    const res = await this.local.get<KakaoCoord2RegionResponse>(
+      "/v2/local/geo/coord2regioncode.json",
       { params: { x, y } },
     );
     return res.data;

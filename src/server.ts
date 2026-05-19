@@ -5,8 +5,8 @@ import type { ToolContext } from "./context.js";
 import { KakaoClient } from "./services/kakao.js";
 import { OdsayClient } from "./services/odsay.js";
 import { logger } from "./logger.js";
-import { registerSearchPlaces } from "./tools/places.js";
-import { registerCoordToAddress } from "./tools/address.js";
+import { registerPlaceTools } from "./tools/places.js";
+import { registerGeoTools } from "./tools/address.js";
 import { registerFindRoute } from "./tools/route.js";
 import { registerFindTransitRoute } from "./tools/transit.js";
 import { registerDaumSearchTools } from "./tools/daum.js";
@@ -34,8 +34,8 @@ export function createServer(config: AppConfig): McpServer {
     );
   }
 
-  registerSearchPlaces(server, ctx);
-  registerCoordToAddress(server, ctx);
+  registerPlaceTools(server, ctx);
+  registerGeoTools(server, ctx);
   registerFindRoute(server, ctx);
   registerFindTransitRoute(server, ctx);
   registerDaumSearchTools(server, ctx);

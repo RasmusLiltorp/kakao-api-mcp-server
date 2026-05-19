@@ -48,6 +48,36 @@ export interface DaumSearchResponse {
   documents: Record<string, unknown>[];
 }
 
+export interface KakaoAddressDocument {
+  address_name: string;
+  address_type?: string;
+  x: string;
+  y: string;
+  road_address: KakaoRoadAddress | null;
+  address: KakaoAddress | null;
+}
+
+export interface KakaoAddressSearchResponse {
+  meta: KakaoSearchMeta;
+  documents: KakaoAddressDocument[];
+}
+
+export interface KakaoRegionDocument {
+  region_type: string;
+  address_name: string;
+  region_1depth_name: string;
+  region_2depth_name: string;
+  region_3depth_name: string;
+  code: string;
+  x: number;
+  y: number;
+}
+
+export interface KakaoCoord2RegionResponse {
+  meta: { total_count: number };
+  documents: KakaoRegionDocument[];
+}
+
 // --- Kakao Mobility API ---
 
 export interface MobilityFare {

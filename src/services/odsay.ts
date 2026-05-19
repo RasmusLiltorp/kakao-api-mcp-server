@@ -1,18 +1,27 @@
-import axios from "axios";
-import { ODSAY_BASE_URL, REQUEST_TIMEOUT_MS } from "../constants.js";
+import type { AxiosInstance } from "axios";
+import { ODSAY_BASE_URL } from "../constants.js";
 import type { OdsayResponse } from "../types.js";
+import { createHttpClient } from "./http.js";
 
 /**
  * Client for the ODsay public-transit routing API.
  *
  * ODsay keys registered against a web URI are validated against the request's
- * Referer header, so the referer is sent with every call.
+ * Referer header. When a referer is configured it is sent with every call;
+ * otherwise no Referer header is added. Requests retry on rate-limit errors.
  */
 export class OdsayClient {
+  private readonly http: AxiosInstance;
+
   constructor(
     private readonly apiKey: string,
-    private readonly referer: string,
-  ) {}
+    referer?: string,
+  ) {
+    this.http = createHttpClient({
+      baseURL: ODSAY_BASE_URL,
+      headers: referer ? { Referer: referer } : undefined,
+    });
+  }
 
   /**
    * Searches public-transit paths between two coordinates.
@@ -28,12 +37,10 @@ export class OdsayClient {
     ex: number,
     ey: number,
   ): Promise<OdsayResponse> {
-    const res = await axios.get<OdsayResponse>(
-      `${ODSAY_BASE_URL}/v1/api/searchPubTransPathT`,
+    const res = await this.http.get<OdsayResponse>(
+      "/v1/api/searchPubTransPathT",
       {
         params: { apiKey: this.apiKey, SX: sx, SY: sy, EX: ex, EY: ey, OPT: 0 },
-        headers: { Referer: this.referer },
-        timeout: REQUEST_TIMEOUT_MS,
       },
     );
     return res.data;
