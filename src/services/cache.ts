@@ -2,7 +2,8 @@
 export class TtlCache<V> {
   private readonly store = new Map<string, { value: V; expires: number }>();
 
-  constructor(private readonly ttlMs: number) {}
+  /** @param defaultTtlMs TTL applied by set() when no override is given. */
+  constructor(private readonly defaultTtlMs: number) {}
 
   /** Returns the cached value, or undefined when absent or expired. */
   get(key: string): V | undefined {
@@ -15,7 +16,11 @@ export class TtlCache<V> {
     return entry.value;
   }
 
-  set(key: string, value: V): void {
-    this.store.set(key, { value, expires: Date.now() + this.ttlMs });
+  /** Stores a value, optionally overriding the default TTL for this entry. */
+  set(key: string, value: V, ttlMs?: number): void {
+    this.store.set(key, {
+      value,
+      expires: Date.now() + (ttlMs ?? this.defaultTtlMs),
+    });
   }
 }

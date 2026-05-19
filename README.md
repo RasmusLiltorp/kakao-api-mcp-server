@@ -30,8 +30,10 @@ transit routing.
 Every tool is read-only and accepts a `response_format` parameter
 (`markdown`, the default, or `json`).
 
-Geocoding results are cached in-process and all outbound requests retry with
-backoff on rate-limit errors, to keep API call counts low and routing reliable.
+To keep API call counts low, every API response is cached in-process with a
+TTL tuned to how fast that data changes (long for addresses, short for
+traffic-sensitive routes), identical concurrent requests are coalesced into
+one, and all outbound requests retry with backoff on rate-limit errors.
 
 `kakao_find_route` computes car routes only. For public transit, use
 `odsay_find_transit_route`.
