@@ -1,8 +1,12 @@
 {
-  "servers": [
-    {
-      "name": "kakao-map",
-      "command": ["node", "dist/index.js", "--mode=stdio", "--kakao-api-key=your_kakao_api_key_here"]
+  "mcpServers": {
+    "korea-travel": {
+      "command": "node",
+      "args": ["/absolute/path/to/korea-travel-mcp/dist/index.js", "--mode=stdio"],
+      "env": {
+        "KAKAO_REST_API_KEY": "your_kakao_rest_api_key_here",
+        "ODSAY_API_KEY": "your_odsay_api_key_here"
+      }
     }
-  ]
-} 
+  }
+}

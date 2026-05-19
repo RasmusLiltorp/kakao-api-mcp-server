@@ -1,28 +1,52 @@
 {
-  "name": "kakao-api-mcp-server",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "korea-travel-mcp",
+  "version": "2.0.0",
+  "description": "MCP server for Korean travel and local search: Kakao Map, Kakao Mobility, ODsay public transit, and Daum search. Fork of jeong-sik/kakao-api-mcp-server.",
   "type": "module",
-  "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "start": "yarn build && node dist/index.js --mode=http --port=3000",
-    "start:stdio": "yarn build && node dist/index.js --mode=stdio",
-    "dev": "yarn build && node dist/index.js --mode=http --port=3000"
+  "main": "dist/index.js",
+  "bin": {
+    "korea-travel-mcp": "dist/index.js"
   },
-  "keywords": [],
-  "author": "",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "start:stdio": "node dist/index.js --mode=stdio",
+    "start:http": "node dist/index.js --mode=http",
+    "dev": "tsx watch src/index.ts --mode=stdio"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "kakao",
+    "odsay",
+    "korea",
+    "transit",
+    "maps"
+  ],
   "license": "MIT",
-  "description": "",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.8.0",
-    "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "axios": "^1.8.4",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0",
+    "yargs": "^18.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
-    "axios": "^1.8.4",
-    "eventsource": "^3.0.6",
-    "node-fetch": "^3.3.2"
+    "@types/node": "^22.10.0",
+    "@types/yargs": "^17.0.35",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3"
   }
 }

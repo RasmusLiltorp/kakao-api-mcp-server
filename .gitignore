@@ -2,6 +2,12 @@
 node_modules/
 .pnp/
 .pnp.js
+.pnp.cjs
+.pnp.loader.mjs
+.yarn/
+
+# build info
+*.tsbuildinfo
 
 # testing
 coverage/
