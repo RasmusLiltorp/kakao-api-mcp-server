@@ -6,6 +6,8 @@ export const SERVER_VERSION = "2.0.0";
 export const KAKAO_LOCAL_BASE_URL = "https://dapi.kakao.com";
 export const KAKAO_MOBILITY_BASE_URL = "https://apis-navi.kakaomobility.com";
 export const ODSAY_BASE_URL = "https://api.odsay.com";
+export const GOBANG_API_BASE_URL = "https://api.gobang.kr";
+export const GOBANG_WEB_BASE_URL = "https://gobang.kr";
 
 /** Timeout applied to every outbound API request. */
 export const REQUEST_TIMEOUT_MS = 15000;
@@ -27,4 +29,8 @@ export const CACHE_TTL = {
   ROUTE: 2 * 60 * 1000,
   /** Public-transit routing: kept short. */
   TRANSIT: 3 * 60 * 1000,
+  /** Gobang listing search and counts: listings change slowly. */
+  LISTING: 5 * 60 * 1000,
+  /** Gobang region lists: effectively static. */
+  REGION: 60 * 60 * 1000,
 } as const;

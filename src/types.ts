@@ -151,6 +151,103 @@ export interface OdsayError {
   msg?: string;
 }
 
+// --- Gobang (gobang.kr 1인가구 housing) API types ---
+
+/** A label tag on a listing, e.g. "여성전용", "엘리베이터" (already human-readable). */
+export interface GobangTag {
+  name: string;
+  fixed?: boolean;
+  type?: string | null;
+}
+
+/** A nearby subway station on a listing. */
+export interface GobangNearSubway {
+  name: string;
+  /** Distance in kilometres. */
+  distance?: number;
+  line?: string;
+}
+
+/** A listing as it appears in search/list results. */
+export interface GobangHouseSummary {
+  no: number;
+  name: string;
+  houseTypes?: string[];
+  latitude?: number;
+  longitude?: number;
+  dongliCode?: string;
+  eupmyeondongFullName?: string;
+  eupmyeondongName?: string;
+  /** Monthly rent range, in 만원 (10,000 KRW). */
+  minPrice?: number;
+  maxPrice?: number;
+  /** Deposit range, in 만원 (10,000 KRW). */
+  minDeposit?: number;
+  maxDeposit?: number;
+  hasTourVideo?: boolean;
+  reviewCount?: number;
+  membershipGrade?: string;
+  tags?: GobangTag[];
+  nearSubways?: GobangNearSubway[];
+  [key: string]: unknown;
+}
+
+/** Full detail for a single listing (superset of the summary fields). */
+export interface GobangHouseDetail extends GobangHouseSummary {
+  addrFullBunji?: string;
+  addrDetail?: string;
+  sidoName?: string;
+  sigunguName?: string;
+  telNo?: string;
+  virtualTelNo?: string;
+  gender?: string;
+  minAge?: number;
+  maxAge?: number;
+  totalFloor?: number;
+  houseInfo?: string;
+  notice?: string;
+  nearSchools?: Array<{ name?: string; distance?: number }>;
+}
+
+/** A place/subway/region suggestion from the place-search endpoint. */
+export interface GobangPlace {
+  placeName?: string;
+  category?: string;
+  line?: string;
+  keyword?: string;
+  x?: number;
+  y?: number;
+  [key: string]: unknown;
+}
+
+/** A top-level region (시/도) with its listing count. */
+export interface GobangSido {
+  sidoCode: string;
+  sidoName: string;
+  sidoFullName?: string;
+  houseCount?: number;
+}
+
+export interface GobangListResponse {
+  result?: GobangHouseSummary[];
+}
+
+export interface GobangDetailResponse {
+  result?: GobangHouseDetail;
+}
+
+export interface GobangCountResponse {
+  result?: number;
+}
+
+export interface GobangPlacesResponse {
+  result?: { items?: GobangPlace[] };
+}
+
+export interface GobangSidosResponse {
+  result?: GobangSido[];
+}
+
 export interface OdsayResponse {
   result?: { path: OdsayPath[] };
   error?: OdsayError[] | OdsayError;

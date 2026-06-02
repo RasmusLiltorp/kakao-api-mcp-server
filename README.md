@@ -2,8 +2,8 @@
 
 An MCP (Model Context Protocol) server for Korean travel and local search. It
 gives an AI agent tools for Kakao Map place search, coordinate-to-address
-conversion, Kakao Mobility car routing, ODsay public-transit routing, and Daum
-web/image/blog/cafe search.
+conversion, Kakao Mobility car routing, ODsay public-transit routing, Daum
+web/image/blog/cafe search, and gobang.kr 1인가구 housing-listing search.
 
 This project is a fork of
 [jeong-sik/kakao-api-mcp-server](https://github.com/jeong-sik/kakao-api-mcp-server).
@@ -26,9 +26,19 @@ transit routing.
 | `daum_search_image` | Search Daum images. |
 | `daum_search_blog` | Search Daum blog posts. |
 | `daum_search_cafe` | Search Daum cafe posts. |
+| `gobang_search_listings` | Search gobang.kr 1인가구 housing listings (고시원/원룸텔/쉐어하우스/코리빙/오피스텔) by region or map bounds, with house-type, gender, rent, deposit and age filters. |
+| `gobang_count_listings` | Count listings matching a filter, without fetching them. |
+| `gobang_listing_detail` | Full detail for one listing (address, contact, gender/age policy, tags, nearby subways and schools). |
+| `gobang_listings_nearby` | Listings within 0–500m or 500–1000m of a coordinate. |
+| `gobang_search_places` | Resolve a place / subway / region name to coordinates via gobang.kr's place search. |
+| `gobang_regions` | List top-level regions (시/도) with their codes and listing counts. |
 
 Every tool is read-only and accepts a `response_format` parameter
 (`markdown`, the default, or `json`).
+
+The `gobang_*` tools use gobang.kr's own public (unauthenticated) endpoints —
+the same ones the website calls — and need no API key. Prices are in 만원
+(10,000 KRW).
 
 To keep API call counts low, every API response is cached in-process with a
 TTL tuned to how fast that data changes (long for addresses, short for
@@ -94,6 +104,7 @@ them by copying the folders into `~/.claude/skills/`.
 | `korea-fastest-route` | Find the fastest route between two places, comparing car and transit. |
 | `korea-place-finder` | Find places and points of interest, including "what is near X". |
 | `korea-local-search` | Search Korean web, blog, cafe and image content via Daum. |
+| `korea-housing-search` | Find 1인가구 housing (고시원, 원룸텔, 쉐어하우스 …) on gobang.kr by region, subway or map area. |
 
 ## Project structure
 

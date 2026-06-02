@@ -4,12 +4,14 @@ import type { AppConfig } from "./config.js";
 import type { ToolContext } from "./context.js";
 import { KakaoClient } from "./services/kakao.js";
 import { OdsayClient } from "./services/odsay.js";
+import { GobangClient } from "./services/gobang.js";
 import { logger } from "./logger.js";
 import { registerPlaceTools } from "./tools/places.js";
 import { registerGeoTools } from "./tools/address.js";
 import { registerFindRoute } from "./tools/route.js";
 import { registerFindTransitRoute } from "./tools/transit.js";
 import { registerDaumSearchTools } from "./tools/daum.js";
+import { registerGobangTools } from "./tools/gobang.js";
 
 /**
  * Builds the MCP server: constructs the API clients from configuration and
@@ -26,6 +28,7 @@ export function createServer(config: AppConfig): McpServer {
     odsay: config.odsayApiKey
       ? new OdsayClient(config.odsayApiKey, config.odsayReferer)
       : null,
+    gobang: new GobangClient(),
   };
 
   if (!ctx.odsay) {
@@ -39,6 +42,7 @@ export function createServer(config: AppConfig): McpServer {
   registerFindRoute(server, ctx);
   registerFindTransitRoute(server, ctx);
   registerDaumSearchTools(server, ctx);
+  registerGobangTools(server, ctx);
 
   return server;
 }
