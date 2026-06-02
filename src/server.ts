@@ -12,6 +12,9 @@ import { registerFindRoute } from "./tools/route.js";
 import { registerFindTransitRoute } from "./tools/transit.js";
 import { registerDaumSearchTools } from "./tools/daum.js";
 import { registerGobangTools } from "./tools/gobang.js";
+import { registerZigbangTools } from "./tools/zigbang.js";
+import { registerDabangTools } from "./tools/dabang.js";
+import { registerGoshipagesTools } from "./tools/goshipages.js";
 
 /**
  * Builds the MCP server: constructs the API clients from configuration and
@@ -43,6 +46,9 @@ export function createServer(config: AppConfig): McpServer {
   registerFindTransitRoute(server, ctx);
   registerDaumSearchTools(server, ctx);
   registerGobangTools(server, ctx);
+  registerZigbangTools(server);
+  registerDabangTools(server);
+  registerGoshipagesTools(server);
 
   return server;
 }

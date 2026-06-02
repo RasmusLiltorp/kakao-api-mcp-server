@@ -3,7 +3,8 @@
 An MCP (Model Context Protocol) server for Korean travel and local search. It
 gives an AI agent tools for Kakao Map place search, coordinate-to-address
 conversion, Kakao Mobility car routing, ODsay public-transit routing, Daum
-web/image/blog/cafe search, and gobang.kr 1인가구 housing-listing search.
+web/image/blog/cafe search, and housing/room-listing search across gobang.kr,
+Zigbang, Dabang and Goshipages.
 
 This project is a fork of
 [jeong-sik/kakao-api-mcp-server](https://github.com/jeong-sik/kakao-api-mcp-server).
@@ -32,13 +33,23 @@ transit routing.
 | `gobang_listings_nearby` | Listings within 0–500m or 500–1000m of a coordinate. |
 | `gobang_search_places` | Resolve a place / subway / region name to coordinates via gobang.kr's place search. |
 | `gobang_regions` | List top-level regions (시/도) with their codes and listing counts. |
+| `zigbang_search_places` | Resolve a place / subway / region / apartment name to coordinates via Zigbang. |
+| `zigbang_search_listings` | Search Zigbang rooms (원룸/오피스텔/빌라) in an area by geohash or coordinate, with deposit/rent and sales-type filters. |
+| `zigbang_listing_detail` | Full detail for one Zigbang listing (price, area, floor, address, options, subways, agent). |
+| `dabang_search_region` | Resolve a Korean place name to a Dabang region code and coordinates. |
+| `dabang_search_listings` | Search Dabang rooms by region/bbox/subway/university with sales-type, room-type, deposit/rent and size filters (search only — detail is login-gated). |
+| `goshipages_search_places` | Autocomplete Goshipages destinations (subway, area, listing) to a destination id. |
+| `goshipages_search_listings` | Search Goshipages stays (goshiwon/livingtel/share-house) near a destination, rates in KRW. |
+| `goshipages_listing_detail` | Full detail for one Goshipages stay (address, gender, amenities, room types, languages). |
 
 Every tool is read-only and accepts a `response_format` parameter
 (`markdown`, the default, or `json`).
 
-The `gobang_*` tools use gobang.kr's own public (unauthenticated) endpoints —
-the same ones the website calls — and need no API key. Prices are in 만원
-(10,000 KRW).
+The `gobang_*`, `zigbang_*`, `dabang_*` and `goshipages_*` tools use each
+platform's own public (unauthenticated) endpoints — the same ones the website
+calls — and need no API key. Korean prices are in 만원 (10,000 KRW); Goshipages
+rates are in KRW. Dabang exposes search only (its listing detail requires login,
+and its search coordinates are approximate).
 
 To keep API call counts low, every API response is cached in-process with a
 TTL tuned to how fast that data changes (long for addresses, short for
@@ -105,6 +116,9 @@ them by copying the folders into `~/.claude/skills/`.
 | `korea-place-finder` | Find places and points of interest, including "what is near X". |
 | `korea-local-search` | Search Korean web, blog, cafe and image content via Daum. |
 | `korea-housing-search` | Find 1인가구 housing (고시원, 원룸텔, 쉐어하우스 …) on gobang.kr by region, subway or map area. |
+| `zigbang-rooms` | Search Zigbang rooms (원룸/오피스텔/빌라) by area with deposit/rent filters, and pull listing detail. |
+| `dabang-rooms` | Search Dabang rooms by region/area with room-type and price filters (search only). |
+| `goshipages-stays` | Find foreigner-friendly Goshipages stays (goshiwon/livingtel/share-house) near a destination. |
 
 ## Project structure
 
